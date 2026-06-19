@@ -1,0 +1,256 @@
+{
+  "version": "1.0",
+  "ai": {
+    "provider": "gemini",
+    "model": "gemini-3.1-flash-lite",
+    "api_key_env": "GOOGLE_API_KEY",
+    "temperature": 0.2,
+    "max_tokens": 2048,
+    "throttle_sec": 4.5,
+    "analysis_concurrency": 1,
+    "enrichment_concurrency": 1,
+    "languages": [
+      "zh"
+    ]
+  },
+  "email": {
+    "enabled": false,
+    "smtp_server": "smtp.qq.com",
+    "smtp_port": 465,
+    "imap_enabled": true,
+    "imap_server": "imap.qq.com",
+    "imap_port": 993,
+    "email_address": "your-email@example.com",
+    "password_env": "EMAIL_PASSWORD",
+    "sender_name": "AI Horizon Daily",
+    "subscribe_keyword": "SUBSCRIBE",
+    "unsubscribe_keyword": "UNSUBSCRIBE"
+  },
+  "sources": {
+    "github": [
+      {
+        "type": "repo_releases",
+        "owner": "openai",
+        "repo": "codex",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "openai",
+        "repo": "openai-python",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "anthropics",
+        "repo": "anthropic-sdk-python",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "googleapis",
+        "repo": "python-genai",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "huggingface",
+        "repo": "transformers",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "vllm-project",
+        "repo": "vllm",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "ollama",
+        "repo": "ollama",
+        "enabled": true
+      },
+      {
+        "type": "repo_releases",
+        "owner": "modelcontextprotocol",
+        "repo": "python-sdk",
+        "enabled": true
+      }
+    ],
+    "hackernews": {
+      "enabled": true,
+      "fetch_top_stories": 25,
+      "min_score": 80
+    },
+    "rss": [
+      {
+        "name": "OpenAI News",
+        "url": "https://openai.com/news/rss.xml",
+        "enabled": true,
+        "category": "official-labs"
+      },
+      {
+        "name": "Google DeepMind",
+        "url": "https://deepmind.google/blog/rss.xml",
+        "enabled": true,
+        "category": "official-labs"
+      },
+      {
+        "name": "Hugging Face Blog",
+        "url": "https://huggingface.co/blog/feed.xml",
+        "enabled": true,
+        "category": "ai-ecosystem"
+      },
+      {
+        "name": "Simon Willison",
+        "url": "https://simonwillison.net/atom/everything/",
+        "enabled": true,
+        "category": "ai-analysis"
+      },
+      {
+        "name": "Latent Space",
+        "url": "https://www.latent.space/feed",
+        "enabled": true,
+        "category": "ai-analysis"
+      },
+      {
+        "name": "量子位",
+        "url": "https://wechat2rss.xlab.app/feed/7131b577c61365cb47e81000738c10d872685908.xml",
+        "enabled": true,
+        "category": "china-ai"
+      },
+      {
+        "name": "新智元",
+        "url": "https://wechat2rss.xlab.app/feed/ede30346413ea70dbef5d485ea5cbb95cca446e7.xml",
+        "enabled": true,
+        "category": "china-ai"
+      }
+    ],
+    "reddit": {
+      "enabled": true,
+      "subreddits": [
+        {
+          "subreddit": "MachineLearning",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 15,
+          "min_score": 50
+        },
+        {
+          "subreddit": "LocalLLaMA",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 15,
+          "min_score": 50
+        }
+      ],
+      "users": [],
+      "fetch_comments": 5
+    },
+    "telegram": {
+      "enabled": false,
+      "channels": []
+    },
+    "twitter": {
+      "enabled": false,
+      "mode": "apify",
+      "users": [
+        "OpenAI",
+        "AnthropicAI",
+        "GoogleDeepMind",
+        "huggingface",
+        "karpathy",
+        "ylecun"
+      ],
+      "fetch_limit": 100,
+      "fetch_reply_text": false,
+      "max_replies_per_tweet": 3,
+      "max_tweets_to_expand": 10,
+      "reply_min_likes": 10,
+      "apify_token_env": "APIFY_TOKEN"
+    },
+    "openbb": {
+      "enabled": false,
+      "fetch_filings": false,
+      "filings_provider": "sec",
+      "watchlists": []
+    },
+    "ossinsight": {
+      "enabled": true,
+      "period": "past_24_hours",
+      "languages": [
+        "All",
+        "Python",
+        "TypeScript"
+      ],
+      "keywords": [
+        "llm",
+        "agent",
+        "inference",
+        "multimodal",
+        "embedding",
+        "transformer",
+        "diffusion",
+        "rag",
+        "mcp"
+      ],
+      "min_stars": 20,
+      "max_items": 20
+    }
+  },
+  "filtering": {
+    "ai_score_threshold": 7.0,
+    "time_window_hours": 24,
+    "max_items": 18,
+    "category_groups": {
+      "official": {
+        "name": "AI 实验室官方发布",
+        "limit": 5,
+        "categories": [
+          "official-labs"
+        ]
+      },
+      "ecosystem": {
+        "name": "AI 开源与生态",
+        "limit": 4,
+        "categories": [
+          "ai-ecosystem"
+        ]
+      },
+      "analysis": {
+        "name": "深度分析",
+        "limit": 4,
+        "categories": [
+          "ai-analysis"
+        ]
+      },
+      "china": {
+        "name": "中文 AI 资讯",
+        "limit": 4,
+        "categories": [
+          "china-ai"
+        ]
+      }
+    },
+    "default_group": "community-and-releases",
+    "default_group_limit": 8
+  },
+  "webhook": {
+    "enabled": false,
+    "url_env": "HORIZON_WEBHOOK_URL",
+    "delivery": "summary_and_items",
+    "overview_position": "last",
+    "platform": "generic",
+    "layout": "markdown",
+    "fallback_layout": "markdown",
+    "languages": [
+      "zh"
+    ],
+    "request_body": {
+      "text": "#{message_title}\n\n#{summary?limit=3500&split=---}"
+    },
+    "headers": ""
+  }
+}
