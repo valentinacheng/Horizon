@@ -4,6 +4,7 @@
     "provider": "gemini",
     "model": "gemini-3.1-flash-lite",
     "api_key_env": "GOOGLE_API_KEY",
+    "provider_chain": "gemini,deepseek",
     "temperature": 0.2,
     "max_tokens": 2048,
     "throttle_sec": 4.5,
