@@ -1,9 +1,8 @@
 name: Daily Horizon Summary
 
 on:
-  # schedule:
-  #   - cron: '0 0 */2 * *'  # Runs every 2 days at 00:00 UTC
-  #     timezone: 'Asia/Shanghai'
+  schedule:
+    - cron: '0 8 * * *'  # Runs daily at 08:00 UTC
   workflow_dispatch:      # Allow manual trigger
 
 jobs:
@@ -24,11 +23,21 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v3
 
+      - name: Verify AI key
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY || secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GOOGLE_API_KEY" ]; then
+            echo "::error::Missing GOOGLE_API_KEY secret for Gemini."
+            echo "::error::Add GOOGLE_API_KEY (or GEMINI_API_KEY) in Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+
       - name: Install dependencies
         run: uv sync
 
       - name: Prepare GitHub Actions config
-        run: cp data/config.github.json data/config.json
+        run: cp data/config.ai-blogger.json data/config.json
 
       - name: Run Horizon
         env:
@@ -36,7 +45,7 @@ jobs:
           # Modify these based on your data/config.github.json provider settings
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY || secrets.GEMINI_API_KEY }}
           LWN_KEY: ${{ secrets.LWN_KEY }}
         run: uv run horizon --hours 48
 
@@ -49,6 +58,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
           keep_files: true  # Keep existing summaries on gh-pages branch
-          commit_message: "📝 Daily Summary: ${{ env.DATE }}"
+          commit_message: "ð Daily Summary: ${{ env.DATE }}"
           publish_branch: gh-pages
           enable_jekyll: true
