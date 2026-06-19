@@ -26,10 +26,11 @@ jobs:
       - name: Verify AI key
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY || secrets.GEMINI_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
-          if [ -z "$GOOGLE_API_KEY" ]; then
-            echo "::error::Missing GOOGLE_API_KEY secret for Gemini."
-            echo "::error::Add GOOGLE_API_KEY (or GEMINI_API_KEY) in Settings -> Secrets and variables -> Actions."
+          if [ -z "$GOOGLE_API_KEY" ] && [ -z "$DEEPSEEK_API_KEY" ]; then
+            echo "::error::Missing AI key secrets."
+            echo "::error::Add GOOGLE_API_KEY (or GEMINI_API_KEY) or DEEPSEEK_API_KEY in Settings -> Secrets and variables -> Actions."
             exit 1
           fi
 
@@ -42,10 +43,11 @@ jobs:
       - name: Run Horizon
         env:
           # Map secrets to environment variables expected by config.json
-          # Modify these based on your data/config.github.json provider settings
+          # Gemini is primary; DeepSeek is the fallback in provider_chain.
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY || secrets.GEMINI_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           LWN_KEY: ${{ secrets.LWN_KEY }}
         run: uv run horizon --hours 48
 
