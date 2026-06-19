@@ -563,6 +563,8 @@ class ChainedAIClient(AIClient):
     def _should_fallback(exc: Exception) -> bool:
         """Determine if an error warrants fallback to the next provider."""
         msg = str(exc).lower()
+        if "missing api key" in msg or "api_key_env" in msg:
+            return True
         if "429" in msg or "rate limit" in msg:
             return True
         if "401" in msg or "403" in msg or "quota" in msg or "exceeded" in msg:
